@@ -10,6 +10,18 @@ assignment_4 = Blueprint('assignment_4', __name__,
                   static_folder='static',
                   template_folder='templates')
 
+@assignment_4.route('/insert_user', methods=['POST'])
+def insert_user():
+    user_id = request.form['user_id']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['user_email']
+    password = request.form['password']
+    user_name = request.form['user_name']
+    print(f'{user_name} {user_id} {first_name} {last_name} {password}')
+    query = "INSERT INTO users(user_id, first_name, last_name, email, password, user_name) VALUES ('%s','%s','%s','%s','%s','%s')" % (user_id, first_name, last_name, email, password, user_name)
+    interact_db(query=query, query_type='commit')
+    return redirect('/assignment_4')
 
 @assignment_4.route('/assignment_4')
 def users():

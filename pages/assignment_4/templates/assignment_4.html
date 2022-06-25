@@ -8,11 +8,25 @@
 <body>
 <h1>Hello</h1>
 
+<h1>Insert Form:</h1>
+
+<form action="/insert_user" method="post">
+    <input type="text" name="user_id" placeholder="User ID">
+    <input type="text" name="first_name" placeholder="First Name">
+    <input type="text" name="last_name" placeholder="Last Name">
+    <input type="email" name="user_email" placeholder="Email">
+    <input type="password" name="password" placeholder="Password">
+    <input type="text" name="user_name" placeholder="User Name">
+    <input type="submit" value="Send">
+
+</form>
+
 <h1>List of users:</h1>
     <div id="container">
         {% for user in users %}
             <li><h3 id="full_name">Full Name: {{ user.first_name | capitalize() }} {{ user.last_name | capitalize() }} </h3></li>
             <h4>Email: {{ user.email }}</h4>
+            <h4>Email: {{ user.user_ID }}</h4>
             <h4>User Name: {{ user.user_name }}</h4>
         {% endfor %}
     </div>
