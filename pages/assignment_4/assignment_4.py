@@ -23,6 +23,13 @@ def insert_user():
     interact_db(query=query, query_type='commit')
     return redirect('/assignment_4')
 
+@assignment_4.route("/delete_user", methods=['POST'])
+def delete_user():
+    user_id = request.form['user_id']
+    query = "DELETE FROM users WHERE user_id= '%s';" %user_id
+    interact_db(query, query_type='commit')
+    return redirect('/assignment_4')
+
 @assignment_4.route('/assignment_4')
 def users():
     query = 'select * from users'

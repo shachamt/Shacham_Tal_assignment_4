@@ -1,4 +1,4 @@
-#container {
+.container {
     border: darkgrey 3px solid;
     border-radius: 5px;
     margin: 10px auto;
