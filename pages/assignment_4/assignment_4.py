@@ -23,6 +23,57 @@ def insert_user():
     interact_db(query=query, query_type='commit')
     return redirect('/assignment_4')
 
+@assignment_4.route("/update_first_name", methods=['POST'])
+def update_first_name():
+    user_id = request.form['user_id']
+    first_name = request.form['first_name']
+    query = "UPDATE users \
+            SET first_name= '%s' \
+            WHERE user_id= '%s';" %(first_name,user_id)
+    interact_db(query=query, query_type='commit')
+    return redirect('/assignment_4')
+
+@assignment_4.route("/update_last_name", methods=['POST'])
+def update_last_name():
+    user_id = request.form['user_id']
+    last_name = request.form['last_name']
+    query = "UPDATE users \
+            SET last_name= '%s' \
+            WHERE user_id= '%s';" %(last_name,user_id)
+    interact_db(query=query, query_type='commit')
+    return redirect('/assignment_4')
+
+@assignment_4.route("/update_email", methods=['POST'])
+def update_email():
+    user_id = request.form['user_id']
+    email = request.form['email']
+    query = "UPDATE users \
+            SET email= '%s' \
+            WHERE user_id= '%s';" %(email,user_id)
+    interact_db(query=query, query_type='commit')
+    return redirect('/assignment_4')
+
+@assignment_4.route("/update_user_name", methods=['POST'])
+def update_user_name():
+    user_id = request.form['user_id']
+    user_name = request.form['user_name']
+    query = "UPDATE users \
+            SET user_name= '%s' \
+            WHERE user_id= '%s';" %(user_name,user_id)
+    interact_db(query=query, query_type='commit')
+    return redirect('/assignment_4')
+
+@assignment_4.route("/update_password", methods=['POST'])
+def update_password():
+    user_id = request.form['user_id']
+    password = request.form['password']
+    query = "UPDATE users \
+            SET password= '%s' \
+            WHERE user_id= '%s';" %(password,user_id)
+    interact_db(query=query, query_type='commit')
+    return redirect('/assignment_4')
+
+
 @assignment_4.route("/delete_user", methods=['POST'])
 def delete_user():
     user_id = request.form['user_id']

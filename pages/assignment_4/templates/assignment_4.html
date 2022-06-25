@@ -19,6 +19,47 @@
     <input type="submit" value="Send">
 </form>
 
+<h1>Update User:</h1>
+    <div class="container">
+        {% for user in users %}
+            <form action="/update_first_name" method="post">
+                <h4>ID: {{ user.user_ID }}</h4>
+                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <li><h3>First Name: {{ user.first_name | capitalize() }} </h3></li>
+                <input type="text" name="first_name" placeholder="Update First Name">
+                <input type="submit" value="Update"><br>
+            </form>
+
+            <form action="/update_last_name" method="post">
+                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <li><h3>Last Name: {{ user.last_name | capitalize() }} </h3></li>
+                <input type="text" name="last_name" placeholder="Update Last Name">
+                <input type="submit" value="Update"><br>
+            </form>
+
+            <form action="/update_email" method="post">
+                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <h4>Email: {{ user.email }}</h4>
+                <input type="email" name="email" placeholder="Update Email">
+                <input type="submit" value="Update"><br>
+            </form>
+
+            <form action="/update_user_name" method="post">
+                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <h4>User Name: {{ user.user_name }}</h4>
+                <input type="text" name="user_name" placeholder="Update User Name">
+                <input type="submit" value="Update"><br>
+            </form>
+
+            <form action="/update_password" method="post">
+                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <input type="password" name="password" placeholder="Update Password">
+                <input type="submit" value="Update"><br>
+            </form>
+        {% endfor %}
+    </div>
+
+
 <h1>Delete User:</h1>
     <div class="container">
         <form action="/delete_user" method="post">
