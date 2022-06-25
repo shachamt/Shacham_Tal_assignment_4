@@ -8,7 +8,7 @@
 <body>
 <h1>Hello</h1>
 
-<h1>Insert Form:</h1>
+<h1>Insert User:</h1>
 <form action="/insert_user" method="post">
     <input type="text" name="user_id" placeholder="User ID">
     <input type="text" name="first_name" placeholder="First Name">
@@ -23,7 +23,7 @@
     <div class="container">
         {% for user in users %}
             <form action="/update_first_name" method="post">
-                <h4>ID: {{ user.user_ID }}</h4>
+                <h2 style="color: royalblue">ID: {{ user.user_ID }}</h2>
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3>First Name: {{ user.first_name | capitalize() }} </h3></li>
                 <input type="text" name="first_name" placeholder="Update First Name">
@@ -39,14 +39,14 @@
 
             <form action="/update_email" method="post">
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
-                <h4>Email: {{ user.email }}</h4>
+                <li><h3>Email: {{ user.email }} </h3></li>
                 <input type="email" name="email" placeholder="Update Email">
                 <input type="submit" value="Update"><br>
             </form>
 
             <form action="/update_user_name" method="post">
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
-                <h4>User Name: {{ user.user_name }}</h4>
+                <li><h3>User Name: {{ user.user_name }} </h3></li>
                 <input type="text" name="user_name" placeholder="Update User Name">
                 <input type="submit" value="Update"><br>
             </form>

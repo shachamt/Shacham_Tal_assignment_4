@@ -17,7 +17,7 @@ app.register_blueprint(assignment_4)
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return render_template('assignment_4.html')
+    return redirect('/assignment_4')
 
 @app.route('/session')
 def session_func():
