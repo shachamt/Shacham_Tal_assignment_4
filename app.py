@@ -4,6 +4,8 @@ from flask import render_template
 from datetime import timedelta
 from flask import request, session, jsonify
 import mysql.connector
+import requests
+import time
 
 app = Flask(__name__)
 
@@ -67,15 +69,73 @@ def interact_db(query, query_type: str):
 # ------------------------------------------------- #
 # ------------------- SELECT ---------------------- #
 # ------------------------------------------------- #
-@app.route('/users')
-def users():
+@app.route('/assignment4/users')
+def assignment4_users():
     query = 'select * from users'
     users_list = interact_db(query, query_type='fetch')
-    return render_template('assignment_4.html', users=users_list)
+    return_list = []
+    for user in users_list:
+        user_dict = {
+                       'first_name': user.first_name,
+                       'last_name': user.last_name,
+                       'email': user.email,
+                       'user_name': user.user_name
+                       }
+        return_list.append(user_dict)
+    return jsonify(return_list)
+
+    return jsonify(users_list)
+
+@app.route('/assignment4/outer_source')
+def assignment4_outer_source():
+    return render_template('outer_source.html')
+
+@app.route('/fetch_be')
+def fetch_be():
+    if 'type' in request.args:
+        print('after click')
+        id= request.args['id']
+        users = []
+        res = requests.get('https://reqres.in/api/users/' +id)
+        users.append(res.json())
+
+        user_dict= {
+            'first_name': users[0]['data']['first_name'],
+            'last_name': users[0]['data']['last_name'],
+            'email': users[0]['data']['email'],
+            'avatar': users[0]['data']['avatar'],
+        }
+
+    return render_template('outer_source.html',first_name=user_dict['first_name'],
+                           last_name=user_dict['last_name'],
+                           email=user_dict['email'],
+                           avatar=user_dict['avatar'])
+
+
+@app.route('/assignment4/restapi_users', defaults={'USER_ID': 12})
+@app.route('/assignment4/restapi_users/int:<USER_ID>')
+def restapi_users(USER_ID):
+    query = f'select * from users where user_id={USER_ID}'
+    user_list = interact_db(query, query_type='fetch')
+
+    if len(user_list) ==0:
+        return_dict= {
+            'message': 'user not found'
+        }
+    else:
+        user_list=user_list[0]
+        return_dict = {'first_name': user_list.first_name,
+                       'last_name': user_list.last_name,
+                       'email': user_list.email,
+                       'user_name': user_list.user_name}
+    return jsonify(return_dict)
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-# INSERT INTO users(user_ID,first_name,last_name,email,user_name,password) VALUES (313131317,'aviv','menahem','aviv@post.bgu.ac.il','avivM','8585')
-# INSERT INTO users(user_ID,first_name,last_name,email,user_name,password) VALUES (258471369,'adi','mizrahi','adimi@post.bgu.ac.il','adidi','3641')
-# INSERT INTO users(user_ID,first_name,last_name,email,user_name,password) VALUES (285236581,'shir','yehezkel','shishir@post.bgu.ac.il','shirshir','2258')
+
+#INSERT INTO users(first_name,last_name,email,user_name,password) VALUES ('aviv','menahem','aviv@post.bgu.ac.il','avivM','8585')
+#INSERT INTO users(first_name,last_name,email,user_name,password) VALUES ('adi','mizrahi','adimi@post.bgu.ac.il','adidi','3641')
+#INSERT INTO users(first_name,last_name,email,user_name,password) VALUES ('shir','yehezkel','shishir@post.bgu.ac.il','shirshir','2258')
+#INSERT INTO users(first_name,last_name,email,user_name,password) VALUES ('shacham','tal','shachamt@post.bgu.ac.il','shachamt','1345')
+#INSERT INTO users(first_name,last_name,email,user_name,password) VALUES ('nir','yaakov','nirnir@post.bgu.ac.il','niro','2222')

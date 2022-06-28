@@ -12,20 +12,20 @@ assignment_4 = Blueprint('assignment_4', __name__,
 
 @assignment_4.route('/insert_user', methods=['POST'])
 def insert_user():
-    user_id = request.form['user_id']
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     email = request.form['user_email']
     password = request.form['password']
     user_name = request.form['user_name']
-    print(f'{user_name} {user_id} {first_name} {last_name} {password}')
-    query = "INSERT INTO users(user_id, first_name, last_name, email, password, user_name) VALUES ('%s','%s','%s','%s','%s','%s')" % (user_id, first_name, last_name, email, password, user_name)
+    query = "INSERT INTO users(first_name, last_name, email, password, user_name) VALUES ('%s','%s','%s','%s','%s')" % ( first_name, last_name, email, password, user_name)
     interact_db(query=query, query_type='commit')
     return redirect('/assignment_4')
 
 @assignment_4.route("/update_first_name", methods=['POST'])
 def update_first_name():
     user_id = request.form['user_id']
+    print(user_id)
+
     first_name = request.form['first_name']
     query = "UPDATE users \
             SET first_name= '%s' \
@@ -77,6 +77,7 @@ def update_password():
 @assignment_4.route("/delete_user", methods=['POST'])
 def delete_user():
     user_id = request.form['user_id']
+    print(user_id)
     query = "DELETE FROM users WHERE user_id= '%s';" %user_id
     interact_db(query, query_type='commit')
     return redirect('/assignment_4')

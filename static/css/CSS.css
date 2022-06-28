@@ -1,3 +1,30 @@
+body {
+    background-color: lightsteelblue;
+    font-family: myFirstFont;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+@font-face {
+    font-family: myFirstFont;
+    src: url(../Spectral/Spectral-Light.ttf);
+}
+.outer_forms {
+    margin: 5%;
+    padding: 3%;
+    border: 2px black solid;
+}
+
+header {
+    margin-left: 5%;
+}
+
+#outer_form input {
+    width: 10%;
+}
 .container {
     border: darkgrey 3px solid;
     border-radius: 5px;

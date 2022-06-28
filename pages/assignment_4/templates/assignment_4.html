@@ -6,16 +6,17 @@
     <link rel="stylesheet" href="/static/css/CSS.css">
 </head>
 <body>
-<h1>Hello</h1>
+{% include('header.html') %}
+
+<h1>Hello, this is the users page</h1>
 
 <h1>Insert User:</h1>
 <form action="/insert_user" method="post">
-    <input type="text" name="user_id" placeholder="User ID">
-    <input type="text" name="first_name" placeholder="First Name">
-    <input type="text" name="last_name" placeholder="Last Name">
-    <input type="email" name="user_email" placeholder="Email">
-    <input type="password" name="password" placeholder="Password">
-    <input type="text" name="user_name" placeholder="User Name">
+    <input type="text" name="first_name" placeholder="First Name" required>
+    <input type="text" name="last_name" placeholder="Last Name" required>
+    <input type="email" name="user_email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="text" name="user_name" placeholder="User Name" required>
     <input type="submit" value="Send">
 </form>
 
@@ -26,34 +27,34 @@
                 <h2 style="color: royalblue">ID: {{ user.user_ID }}</h2>
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3>First Name: {{ user.first_name | capitalize() }} </h3></li>
-                <input type="text" name="first_name" placeholder="Update First Name">
+                <input type="text" name="first_name" placeholder="Update First Name" required>
                 <input type="submit" value="Update"><br>
             </form>
 
             <form action="/update_last_name" method="post">
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3>Last Name: {{ user.last_name | capitalize() }} </h3></li>
-                <input type="text" name="last_name" placeholder="Update Last Name">
+                <input type="text" name="last_name" placeholder="Update Last Name" required>
                 <input type="submit" value="Update"><br>
             </form>
 
             <form action="/update_email" method="post">
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3>Email: {{ user.email }} </h3></li>
-                <input type="email" name="email" placeholder="Update Email">
+                <input type="email" name="email" placeholder="Update Email" required>
                 <input type="submit" value="Update"><br>
             </form>
 
             <form action="/update_user_name" method="post">
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3>User Name: {{ user.user_name }} </h3></li>
-                <input type="text" name="user_name" placeholder="Update User Name">
+                <input type="text" name="user_name" placeholder="Update User Name" required>
                 <input type="submit" value="Update"><br>
             </form>
 
             <form action="/update_password" method="post">
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
-                <input type="password" name="password" placeholder="Update Password">
+                <input type="password" name="password" placeholder="Update Password" required>
                 <input type="submit" value="Update"><br>
             </form>
         {% endfor %}
@@ -62,14 +63,15 @@
 
 <h1>Delete User:</h1>
     <div class="container">
-        <form action="/delete_user" method="post">
-            {% for user in users %}
+        {% for user in users %}
+            <form action="/delete_user" method="post">
+                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3 id="full_name">Full Name: {{ user.first_name | capitalize() }} {{ user.last_name | capitalize() }} </h3></li>
                 <h4>ID: {{ user.user_ID }}</h4>
-                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <input type="submit" value="Delete"><br>
-            {% endfor %}
-        </form>
+            </form>
+        {% endfor %}
+
     </div>
 
 

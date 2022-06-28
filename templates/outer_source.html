@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>json</title>
+    <link rel="stylesheet" href="/static/css/CSS.css">
+    <script defer src="{{url_for('static', filename='JS/JS.js')}}"></script>
+</head>
+<body>
+{% include('header.html') %}
+
+
+
+<h1>Hello, this is Outer Source page</h1>
+<form id="outer_form" class="outer_forms" >
+    <h2 style="color: darkorchid">Frontend Search</h2>
+    <h3>Please Insert the ID you want to search, from 1-12:</h3>
+    <input type="number" name="id" placeholder="Insert ID" min="1" max="12" required>
+    <button onclick="myFunction()">Search</button>
+</form>
+    <section id="frontend_section"></section>
+
+<form action="/fetch_be" id="outer_form_backend" class="outer_forms">
+    <h2 style="color: darkorchid">Backend Search</h2>
+    <h3>Please Insert the ID you want to search, from 1-12:</h3>
+    <input type="hidden" name="type" value="sync">
+    <input type="number" name="id" placeholder="Insert ID" min="1" max="12" required>
+    <button >Search</button>
+    {% if first_name %}
+        <h3>Full Name: {{ first_name }} {{ last_name }} </h3>
+        <h3>Email: {{ email }} </h3>
+        <img src="{{ avatar }}" alt="The Avatar">
+    {% endif %}
+
+</form>
+
+
+</body>
+</html>
