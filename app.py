@@ -6,6 +6,8 @@ from flask import request, session, jsonify
 import mysql.connector
 import requests
 import time
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -30,14 +32,17 @@ def session_func():
 # ------------------------------------------------- #
 # ------------- DATABASE CONNECTION --------------- #
 # ------------------------------------------------- #
+
+
 def interact_db(query, query_type: str):
     return_value = False
-    connection = mysql.connector.connect(host='localhost',
-                                         user='root',
-                                         passwd='root',
-                                         database='assignment_4')
+    connection = mysql.connector.connect(host=os.getenv('DB_HOST'),
+                                         user=os.getenv('DB_USER'),
+                                         passwd=os.getenv('DB_PASSWORD'),
+                                         database=os.getenv('DB_NAME'))
     cursor = connection.cursor(named_tuple=True)
     cursor.execute(query)
+
     #
 
     if query_type == 'commit':
@@ -84,8 +89,6 @@ def assignment4_users():
         return_list.append(user_dict)
     return jsonify(return_list)
 
-    return jsonify(users_list)
-
 @app.route('/assignment4/outer_source')
 def assignment4_outer_source():
     return render_template('outer_source.html')
@@ -113,7 +116,7 @@ def fetch_be():
 
 
 @app.route('/assignment4/restapi_users', defaults={'USER_ID': 12})
-@app.route('/assignment4/restapi_users/int:<USER_ID>')
+@app.route('/assignment4/restapi_users/<int:USER_ID>')
 def restapi_users(USER_ID):
     query = f'select * from users where user_id={USER_ID}'
     user_list = interact_db(query, query_type='fetch')

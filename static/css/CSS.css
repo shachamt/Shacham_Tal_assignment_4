@@ -25,6 +25,11 @@ header {
 #outer_form input {
     width: 10%;
 }
+
+#outer_form_backend input{
+        width: 10%;
+
+}
 .container {
     border: darkgrey 3px solid;
     border-radius: 5px;
