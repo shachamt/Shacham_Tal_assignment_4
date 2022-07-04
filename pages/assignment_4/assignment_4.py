@@ -13,67 +13,92 @@ assignment_4 = Blueprint('assignment_4', __name__,
 
 @assignment_4.route('/insert_user', methods=['POST'])
 def insert_user():
+    query = 'select * from users'
+    users_list = interact_db(query, query_type='fetch')
+    email = request.form['user_email']
+    user_name = request.form['user_name']
+    for user in users_list:
+        if email == user.email:
+            return render_template('assignment_4.html',users=users_list, existMessage="Email already exists in system!")
+        if user_name == user.user_name:
+            return render_template('/assignment_4.html',users=users_list, existMessage="User name already exists in system!")
+
     first_name = request.form['first_name']
     last_name = request.form['last_name']
-    email = request.form['user_email']
     password = request.form['password']
-    user_name = request.form['user_name']
     query = "INSERT INTO users(first_name, last_name, email, password, user_name) VALUES ('%s','%s','%s','%s','%s')" % ( first_name, last_name, email, password, user_name)
     interact_db(query=query, query_type='commit')
-    return redirect('/assignment_4')
+    return render_template('/assignment_4.html', users=users_list, successMessage="User added successfully!")
 
-@assignment_4.route("/update_first_name", methods=['POST'])
-def update_first_name():
-    user_id = request.form['user_id']
-    print(user_id)
-
-    first_name = request.form['first_name']
-    query = "UPDATE users \
-            SET first_name= '%s' \
-            WHERE user_id= '%s';" %(first_name,user_id)
-    interact_db(query=query, query_type='commit')
-    return redirect('/assignment_4')
-
-@assignment_4.route("/update_last_name", methods=['POST'])
-def update_last_name():
-    user_id = request.form['user_id']
-    last_name = request.form['last_name']
-    query = "UPDATE users \
-            SET last_name= '%s' \
-            WHERE user_id= '%s';" %(last_name,user_id)
-    interact_db(query=query, query_type='commit')
-    return redirect('/assignment_4')
-
-@assignment_4.route("/update_email", methods=['POST'])
-def update_email():
-    user_id = request.form['user_id']
-    email = request.form['email']
-    query = "UPDATE users \
-            SET email= '%s' \
-            WHERE user_id= '%s';" %(email,user_id)
-    interact_db(query=query, query_type='commit')
-    return redirect('/assignment_4')
-
-@assignment_4.route("/update_user_name", methods=['POST'])
-def update_user_name():
-    user_id = request.form['user_id']
+@assignment_4.route("/identify", methods=['POST'])
+def identify():
     user_name = request.form['user_name']
-    query = "UPDATE users \
-            SET user_name= '%s' \
-            WHERE user_id= '%s';" %(user_name,user_id)
-    interact_db(query=query, query_type='commit')
-    return redirect('/assignment_4')
-
-@assignment_4.route("/update_password", methods=['POST'])
-def update_password():
-    user_id = request.form['user_id']
     password = request.form['password']
-    query = "UPDATE users \
-            SET password= '%s' \
-            WHERE user_id= '%s';" %(password,user_id)
-    interact_db(query=query, query_type='commit')
-    return redirect('/assignment_4')
+    query = 'select * from users'
+    users_list = interact_db(query, query_type='fetch')
 
+    for user in users_list:
+        if user_name == user.user_name:
+            if password == user.password:
+                return render_template('assignment_4.html', users=users_list, user=user)
+            else:
+                return render_template('assignment_4.html', wrongMessage='Wrong Password')
+    return render_template('assignment_4.html', wrongMessage='Wrong User Name')
+
+@assignment_4.route("/update", methods=['POST'])
+def update():
+    user_name = request.form['user_name']
+    user_id = request.form['user_id']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    password = request.form['password']
+    query = 'select * from users'
+    query2 = 'select * from users' \
+             'where user_id=user_id'
+    users_list = interact_db(query, query_type='fetch')
+    currUser = interact_db(query, query_type='fetch')
+
+    if user_name!='':
+        for user in users_list:
+            if user_name == user.user_name:
+                return render_template('assignment_4.html',exist="User Name already exists in system!",user=currUser,users=users_list)
+        query = "UPDATE users \
+                SET user_name= '%s' \
+                WHERE user_id= '%s';" % (user_name, user_id)
+        interact_db(query=query, query_type='commit')
+
+    if first_name!='':
+        query = "UPDATE users \
+                SET first_name= '%s' \
+                WHERE user_id= '%s';" % (first_name, user_id)
+        interact_db(query=query, query_type='commit')
+
+    if last_name != '':
+        query = "UPDATE users \
+                SET last_name= '%s' \
+                WHERE user_id= '%s';" % (last_name, user_id)
+        interact_db(query=query, query_type='commit')
+
+    if email != '':
+        for user in users_list:
+            if email == user.email:
+                return render_template('assignment_4.html',exist="Email already exists in system!",user=currUser,users=users_list)
+        query = "UPDATE users \
+                SET email= '%s' \
+                WHERE user_id= '%s';" % (email, user_id)
+        interact_db(query=query, query_type='commit')
+
+    if password != '':
+        query = "UPDATE users \
+                SET password= '%s' \
+                WHERE user_id= '%s';" % (password, user_id)
+        interact_db(query=query, query_type='commit')
+
+    if (password == '') & (email == '') & (last_name == '') &(first_name=='') & (user_name==''):
+        return render_template('assignment_4.html', done='Nothing to update', users=users_list)
+
+    return render_template('assignment_4.html', done='Updated',users=users_list)
 
 @assignment_4.route("/delete_user", methods=['POST'])
 def delete_user():
@@ -81,7 +106,9 @@ def delete_user():
     print(user_id)
     query = "DELETE FROM users WHERE user_id= '%s';" %user_id
     interact_db(query, query_type='commit')
-    return redirect('/assignment_4')
+    query = 'select * from users'
+    users_list = interact_db(query, query_type='fetch')
+    return render_template('assignment_4.html', users=users_list, delete='User deleted')
 
 @assignment_4.route('/assignment_4')
 def users():

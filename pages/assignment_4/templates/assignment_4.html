@@ -11,77 +11,83 @@
 <h1>Hello, this is the users page</h1>
 
 <h1>Insert User:</h1>
-<form action="/insert_user" method="post">
-    <input type="text" name="first_name" placeholder="First Name" required>
-    <input type="text" name="last_name" placeholder="Last Name" required>
+<form style="margin-left: 15%; padding-bottom: 5%" action="/insert_user" method="post">
+    <input type="text" name="first_name" placeholder="First Name" minlength="2" required>
+    <input type="text" name="last_name" placeholder="Last Name" minlength="2" required>
     <input type="email" name="user_email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <input type="text" name="user_name" placeholder="User Name" required>
+    <input type="password" name="password" placeholder="Password" minlength="4" required>
+    <input type="text" name="user_name" placeholder="User Name" minlength="3" required>
     <input type="submit" value="Send">
-</form>
+    {% if existMessage %}
+        <h3 style="color: red;width: 30%; background-color: white"> {{ existMessage }}</h3>
+    {% endif %}
 
-<h1>Update User:</h1>
-    <div class="container">
-        {% for user in users %}
-            <form action="/update_first_name" method="post">
-                <h2 style="color: royalblue">ID: {{ user.user_ID }}</h2>
+    {% if successMessage %}
+        <h3 style="color: green;width: 15%; background-color: white"> {{ successMessage }}</h3>
+    {% endif %}
+
+</form>
+{% if delete %}
+    <h3 style="color: green;width: 15%; background-color: white"> {{ delete }}</h3>
+{% endif %}
+
+<h1>Update/Delete User:</h1>
+</form>
+    {% if user %}
+        <div class="container">
+            <form action="/update" method="post">
+                <h2>Update User:</h2>
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3>First Name: {{ user.first_name | capitalize() }} </h3></li>
-                <input type="text" name="first_name" placeholder="Update First Name" required>
-                <input type="submit" value="Update"><br>
-            </form>
-
-            <form action="/update_last_name" method="post">
-                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <input type="text" name="first_name" placeholder="Update First Name" minlength="2"><br>
                 <li><h3>Last Name: {{ user.last_name | capitalize() }} </h3></li>
-                <input type="text" name="last_name" placeholder="Update Last Name" required>
-                <input type="submit" value="Update"><br>
-            </form>
-
-            <form action="/update_email" method="post">
-                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <input type="text" name="last_name" placeholder="Update Last Name" minlength="2"><br>
                 <li><h3>Email: {{ user.email }} </h3></li>
-                <input type="email" name="email" placeholder="Update Email" required>
-                <input type="submit" value="Update"><br>
-            </form>
-
-            <form action="/update_user_name" method="post">
-                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
+                <input type="email" name="email" placeholder="Update Email"><br>
                 <li><h3>User Name: {{ user.user_name }} </h3></li>
-                <input type="text" name="user_name" placeholder="Update User Name" required>
+                <input type="text" name="user_name" placeholder="Update User Name" minlength="3"><br>
+                <input type="password" name="password" placeholder="Update Password" minlength="4"><br><br>
                 <input type="submit" value="Update"><br>
+                {% if exist %}
+                    <h3 style="color: red;width: 40%; background-color: white"> {{ exist }}</h3>
+                {% endif %}
             </form>
+        </div>
 
-            <form action="/update_password" method="post">
-                <input type="hidden" name="user_id" value="{{ user.user_ID }}">
-                <input type="password" name="password" placeholder="Update Password" required>
-                <input type="submit" value="Update"><br>
-            </form>
-        {% endfor %}
-    </div>
-
-
-<h1>Delete User:</h1>
-    <div class="container">
-        {% for user in users %}
+        <div class="container">
             <form action="/delete_user" method="post">
+                <h2>Delete User:</h2>
                 <input type="hidden" name="user_id" value="{{ user.user_ID }}">
                 <li><h3 id="full_name">Full Name: {{ user.first_name | capitalize() }} {{ user.last_name | capitalize() }} </h3></li>
                 <h4>ID: {{ user.user_ID }}</h4>
                 <input type="submit" value="Delete"><br>
             </form>
-        {% endfor %}
+        </div>
 
-    </div>
+
+    {% else %}
+
+        <form style="margin-left: 30%" action="/identify" method="post">
+            <h3>Please identify for update/delete:</h3>
+            <input type="text" name="user_name" placeholder="User Name" minlength="3" required>
+            <input type="password" name="password" placeholder="Password" minlength="4" required>
+            <input type="submit" value="Identify">
+            {% if wrongMessage %}
+                <h3 style="color: red;width: 15%; background-color: white"> {{ wrongMessage }}</h3>
+            {% endif %}
+        {% if done %}
+                <h3 style="color: green;width: 15%; background-color: white"> {{ done }}</h3>
+            {% endif %}
+
+    {% endif %}
+</form>
 
 
 <h1>List of users:</h1>
     <div class="container">
         {% for user in users %}
             <li><h3 id="full_name">Full Name: {{ user.first_name | capitalize() }} {{ user.last_name | capitalize() }} </h3></li>
-            <h4>Email: {{ user.email }}</h4>
-            <h4>ID: {{ user.user_ID }}</h4>
-            <h4>User Name: {{ user.user_name }}</h4>
+            <h4>Email: {{ user.email }} - ID: {{ user.user_ID }} - User Name: {{ user.user_name }}</h4>
         {% endfor %}
     </div>
 

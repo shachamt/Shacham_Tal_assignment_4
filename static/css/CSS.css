@@ -33,13 +33,16 @@ header {
 .container {
     border: darkgrey 3px solid;
     border-radius: 5px;
-    margin: 10px auto;
-    width: 50%;
-    padding: 10px;
-    align-content: center;
+    width: 60%;
+    margin-left:20%;
+    margin-bottom: 3%;
+    padding: 2% 2%;
 }
 
 h1 {
+    text-align: center;
+}
+h2 {
     text-align: center;
 }
 

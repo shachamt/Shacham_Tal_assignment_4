@@ -115,7 +115,7 @@ def fetch_be():
                            avatar=user_dict['avatar'])
 
 
-@app.route('/assignment4/restapi_users', defaults={'USER_ID': 12})
+@app.route('/assignment4/restapi_users', defaults={'USER_ID': 6})
 @app.route('/assignment4/restapi_users/<int:USER_ID>')
 def restapi_users(USER_ID):
     query = f'select * from users where user_id={USER_ID}'
